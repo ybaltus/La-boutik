@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mon compte - myShop{% endblock %}
+
+{% block content %}
+    <h1>Mon compte</h1>
+    <p>Bienvenue {{ app.user.firstname}} {{ app.user.lastname }} sur votre compte</p>
+    <hr>
+    <ul>
+        <li><a href="{{ path('account_password') }}">Modifier mont mot de passe</a></li>
+        <li>Ajouter mes adresses</li>
+        <li>Gérer mes commandes</li>
+    </ul>
+    <hr>
+
+{% endblock %}
