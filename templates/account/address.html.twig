@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mes adresses - myShop{% endblock %}
+
+{% block content %}
+    {% for message in app.flashes('success') %}
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    {% endfor %}
+    <a class="btn btn-info btn-sm float-right" href="{{ path('account_address_add') }}">Ajouter une adresse</a>
+    <h1>Mes adresses</h1>
+    <p>C'est dans cette espace que vous allez pouvoir gérer toutes vos adresses</p>
+    <a href="{{ path('account') }}", title="Retour">Retour</a>
+    <hr>
+    {% if app.user.addresses|length == 0 %}
+        <p>
+            Vous n'avez pas encore ajouter d'adresses dans votre compte client.
+            Pour en ajouter une cliquez <a href="{{ path('account_address_add') }}" title="Ajouter une adresse">ici.</a>
+        </p>
+    {% else %}
+        <div class="row">
+        {% for address in app.user.addresses %}
+            <div class="col-md-4">
+                <div class="card" style="width: 18rem;">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ address.name }}</h5>
+                        <p class="card-text">
+                            {{ address.address }}, <br>
+                            {{ address.zipcode }} - {{ address.city}} - {{ address.country }}
+                        </p>
+                        <a href="{{ path('account_address_edit', {'id': address.id}) }}" title="Modifier" class="card-link">Modifier</a> | <a href="{{ path('account_address_delete', {'id': address.id}) }}" title="Modifier" class="card-link">Supprimer</a>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+        </div>
+    {% endif %}
+{% endblock %}
