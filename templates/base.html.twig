@@ -13,7 +13,8 @@
         {{ encore_entry_link_tags('app') }}
         {{ encore_entry_link_tags('myShop') }}
     {% endblock %}
-
+    {% block javascript_head %}
+    {% endblock %}
 </head>
 <body>
 <header>
@@ -116,5 +117,7 @@
     {% block javascripts %}
         {{ encore_entry_script_tags('app') }}
     {% endblock %}
+{% block javascripts_additionnals %}
+{% endblock %}
 </body>
 </html>

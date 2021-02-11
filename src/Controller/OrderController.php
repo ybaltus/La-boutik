@@ -83,6 +83,8 @@ class OrderController extends AbstractController
             $deliveryContent .= '<br/>'.$delivery->getCountry();
 
             $order = new Order();
+            $reference = $date->format('dmY').'-'.uniqid();
+            $order->setReference($reference);
             $order->setUser($this->getUser());
             $order->setCreatedAt($date);
             $order->setCarrierName($carrier->getName());
@@ -101,13 +103,13 @@ class OrderController extends AbstractController
                 $orderDetails->setTotal($product['product']->getPrice() * $product['quantity']);
                 $this->em->persist($orderDetails);
             }
-
             $this->em->flush();
 
             return $this->render('order/add.html.twig', [
                 'carrier' => $carrier,
                 'cart' => $cart->getFull(),
-                'delivery' => $deliveryContent
+                'delivery' => $deliveryContent,
+                'reference'=> $order->getReference()
             ]);
         }
 
