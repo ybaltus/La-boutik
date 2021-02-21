@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Classes\Mail;
 use App\Entity\User;
 use App\Form\RegisterType;
 use Doctrine\ORM\EntityManagerInterface;
@@ -49,20 +50,33 @@ class RegisterController extends AbstractController
 
         if($form->isSubmitted() && $form->isValid()) {
             $user = $form->getData();
-            $plainPassword = $user->getPassword();
-            $password = $this->encoder->encodePassword($user, $plainPassword);
-            $user->setPassword($password);
-            $this->em->persist($user);
-            $this->em->flush();
-            $userInfo = $user->getFirstname().  " ".$user->getLastname();
 
-            $this->addFlash('success', "Utilisateur $userInfo inscrit !");
+            $searchEmail = $this->em->getRepository(User::class)->findOneByEmail(['email'=>$user->getEmail()]);
 
-            $this->redirectToRoute("register");
+            if(!$searchEmail){
+                $plainPassword = $user->getPassword();
+                $password = $this->encoder->encodePassword($user, $plainPassword);
+                $user->setPassword($password);
+                $this->em->persist($user);
+                $this->em->flush();
+                $userInfo = $user->getFirstname().  " ".$user->getLastname();
+
+                //Send email
+                $mail = new Mail();
+                $content = "Bonjour ".$userInfo."<br>Bienvenue sur MyShop !";
+                $mail->send($user->getEmail(), $userInfo, 'Bienvenue sur MyShop', $content);
+
+                //Redirect
+                $this->addFlash('success', "Utilisateur $userInfo inscrit !");
+                $this->redirectToRoute("register");
+            }else{
+                $this->addFlash('error', "L'email existe déjà !");
+            }
+
         }
 
         return $this->render('register/index.html.twig', [
-            'form' => $form->createView()
+            'form' => $form->createView(),
         ]);
     }
 }
