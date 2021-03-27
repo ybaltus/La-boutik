@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nous contacter - La boutik {% endblock %}
+
+{% block content %}
+    <h2>Nous contacter</h2>
+    <p>N'hésitez pas à prendre contact avec notre équipe. Nous vous répondrons dans les meilleurs délais</p>
+    <div class="row">
+        {% for message in app.flashes('notice') %}
+            <div class="alert alert-info">
+                {{ message }}
+            </div>
+        {% endfor %}
+        <div class="col-8">
+            {{ form(form) }}
+        </div>
+        <div class="col-4">
+            <strong>La boutik</strong>
+            <hr>
+            06.66.55.22.30 <br/>
+            7 rue des lilas fleurie 75000 Paris <br/>
+            contact@laboutik.fr<br/>
+        </div>
+    </div>
+{% endblock %}

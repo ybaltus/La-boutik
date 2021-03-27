@@ -4,16 +4,29 @@
 
 {% block content %}
     <h1>Mon compte</h1>
+    {% if is_granted("ROLE_ADMIN") %}
+        <small><a href="{{ path('admin') }}">Vous êtes administrateur. Accéder au back office</a></small>
+    {% endif %}
     <p>Bienvenue {{ app.user.firstname}} {{ app.user.lastname }} sur votre compte</p>
     <hr>
-    <ul>
-        {% if is_granted("ROLE_ADMIN") %}
-        <li><a href="{{ path('admin') }}">Vous êtes administrateur. Accéder au back office</a></li>
-        {% endif %}
-        <li><a href="{{ path('account_password') }}">Modifier mont mot de passe</a></li>
-        <li><a href="{{ path('account_address') }}">Gérer mes adresses</a></li>
-        <li><a href="{{ path('account_order') }}">Gérer mes commandes</a></li>
-    </ul>
-    <hr>
-
+    <div class="row">
+        <div class="col-4">
+            <div class="account-item text-center">
+                <img src="{{ asset('build/images/padlock.png') }}" alt="Modifier mont mot de passe"><br/>
+                <a href="{{ path('account_password') }}" title="Modifier mont mot de passe">Modifier mont mot de passe</a>
+            </div>
+        </div>
+        <div class="col-4">
+            <div class="account-item text-center">
+                <img src="{{ asset('build/images/address.png') }}" alt="Gérer mes adresses"><br/>
+                <a href="{{ path('account_address') }}" title="Gérer mes adresses">Gérer mes adresses</a>
+            </div>
+        </div>
+        <div class="col-4">
+            <div class="account-item text-center">
+                <img src="{{ asset('build/images/shopping-bag.png') }}" alt="Gérer mes commandes"><br/>
+                <a href="{{ path('account_order') }}" title="Gérer mes commandes">Gérer mes commandes</a>
+            </div>
+        </div>
+    </div>
 {% endblock %}
